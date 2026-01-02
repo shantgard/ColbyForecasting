@@ -90,9 +90,6 @@ forecasts, to understanding the complexities of forecasts’ impacts.
 - Reading assignment for next time: [Mollomo
   1998](https://github.com/BigelowLab/ColbyForecasting/blob/main/reading/Mollomo1998.pdf)
 
-- Lecture: Predicting the distributions of right whales and white sharks
-  in the Gulf of Maine (Camille and Kyle guest lectures)
-
 - Discussion: Where does our data come from?
 
 - R Tutorial: [Background
