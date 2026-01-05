@@ -103,8 +103,6 @@ forecasts, to understanding the complexities of forecasts’ impacts.
 
 - Panel: Early career scientists in Ocean Forecasting
 
-- Lecture: Forecasting Methodologies
-
 - R Tutorial:
   [Covariates](https://bigelowlab.github.io/ColbyForecasting/C03_covariates.html)
 
@@ -113,7 +111,7 @@ forecasts, to understanding the complexities of forecasts’ impacts.
 
 ## 4. Tuesday Jan 13
 
-- Lecture: Algorithms and Accountability
+- Lecture: Forecasting Methodologies
 
 - Discussion: Forecasting unintended consequences
 
