@@ -53,7 +53,9 @@ forecasts, to understanding the complexities of forecasts’ impacts.
 
 ------------------------------------------------------------------------
 
-## **SCHEDULE** (changes will be noted)
+## **SCHEDULE** 
+
+This schedule has built in flexibility. Changes will be noted.
 
 ### 1. Tuesday Jan 6
 
