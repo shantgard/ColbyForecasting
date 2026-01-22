@@ -1,0 +1,177 @@
+---
+title: "C03_assignment.Rmd"
+output: github_document
+---
+#set up r and name species 
+
+```{r setup, include=FALSE}
+source("setup.R")
+SPECIES2 = "Doryteuthis pealeii"
+```
+
+## Read species 
+
+```{r read_obs}
+obs = read_obis(SPECIES2)
+obs
+```
+This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+
+## Summary of observations 
+
+You can include R code in the document as follows:
+
+```{r cars}
+summary(obs)
+```
+#filter out na values in dataset
+```{r obs_filter_date}
+obs = obs |>
+  filter(!is.na(eventDate))
+summary(obs)
+```
+
+
+## plot of observation 
+```{r plot_year, echo=FALSE}
+ggplot(data = obs,
+       mapping = aes(x = year)) + 
+  geom_bar() + 
+  geom_vline(xintercept = c(1982, 2013), linetype = "dashed") + 
+  labs(title = "Counts per year")
+```
+#load data 
+```{r load_obs_mask}
+coast = read_coastline()
+obs = read_observations(scientificname = "Doryteuthis pealeii")
+db = brickman_database() |>
+  filter(scenario == "STATIC", var == "mask")
+mask = read_brickman(db)
+```
+
+#change coordintes of observation 
+```{r all_observations_count}
+LON0 = -67
+LAT0 = 46
+all_counts = count(st_drop_geometry(obs), month)
+all_counts
+```
+
+#GG plot created for species observation presence 
+```{r_ggplot}
+ggplot() +
+  geom_sf(data = obs, alpha = 0.2, shape = "circle small", size = 1) +
+  geom_sf(data = coast, col = "green") +
+  geom_text(data = all_counts,
+            mapping = aes(x = LON0, 
+                          y = LAT0, 
+                          label = sprintf("n: %i", .data$n)),
+                          size = 3) + 
+  labs(x = "Longitude", y = "Latitude", title = "All observations") +
+  facet_wrap(~month)
+```
+#thin observations filtering out months without data (should be none)
+```{r thin_observations}
+thinned_obs = sapply(month.abb,
+               function(mon){ 
+                 thin_by_cell(obs |> filter(month == mon), mask)
+               }, simplify = FALSE) |>
+  dplyr::bind_rows() 
+thinned_counts = count(st_drop_geometry(thinned_obs), month)
+
+ggplot() +
+  geom_sf(data = thinned_obs, 
+          alpha = 0.2, 
+          shape = "circle small", 
+          size = 1) +
+  geom_sf(data = coast, col = "orange") +
+  geom_text(data = thinned_counts,
+            mapping = aes(x = LON0, 
+                          y = LAT0, 
+                          label = sprintf("n: %i", .data$n)),
+                          size = 3) + 
+  labs(x = "Longitude", y = "Latitude", title = "Thinned observations") +
+  facet_wrap(~month)
+```
+#ggplot bias map 
+```{r bias_map}
+bias_map = rasterize_point_density(obs, mask) 
+
+ggplot() +
+  geom_stars(data = bias_map, aes(fill = count)) +
+  scale_fill_viridis_b(na.value = "transparent") +
+  geom_sf(data = coast, col = "orange") + 
+  labs(x = "Longitude", y = "Latitude", title = "Bias map using all observations")
+```
+#explore background 
+```{r explore_background}
+nback_avg = mean(all_counts$n) |>
+  round()
+nback_avg
+```
+#sample of background 
+```{r sample_background}
+obsbkg = sapply(month.abb,
+    function(mon){ 
+      sample_background(thinned_obs |> filter(month == mon), # <- just this month
+                       bias_map,
+                       method = "bias",  # <-- it needs to know it's a bias map
+                       return_pres = TRUE, # <-- give me the obs back, too
+                       n = nback_avg) |>   # <-- how many points
+        mutate(month = mon, .before = 1)
+    }, simplify = FALSE) |>
+  bind_rows() |>
+  mutate(month = factor(month, levels = month.abb))
+obsbkg 
+```
+#check tallying for each month
+```{r nback_avg}
+count(st_drop_geometry(obsbkg), month, class)
+```
+
+#ggplot background 
+```{r plot_presence_background}
+ggplot() +
+  geom_sf(data = obsbkg, 
+          mapping = aes(col = class),
+          alpha =  0.4, shape = "circle small", size = 1) +
+  geom_sf(data = coast, col = "orange")  + 
+  labs(x = "Longitude", y = "Latitude", title = "All") +   
+  theme_bw() + 
+  scale_fill_okabe_ito() +  
+  facet_wrap(~month)
+
+```
+
+#creating model for species 
+```{r save_model_input}
+write_model_input(obsbkg, scientificname = "Doryteuthis pealeii")
+```
+#save model 
+```{r read_model_input}
+x = read_model_input(scientificname = "Doryteuthis pealeii")
+```
+#generate variables in brickman database
+```{r read_brickman}
+db = brickman_database() |>
+  dplyr::filter(scenario == "PRESENT", interval == "mon")
+present = read_brickman(db)
+```
+#generate pairs plot for variables in brickman database vs. observations 
+```{r pairs}
+pairs(present)
+```
+#filter significant correlation values 
+```{r filter_collinear}
+keep = filter_collinear(present, method = "cor_caret", cutoff = 0.65)
+keep
+```
+
+
+
+
+
+
+
+
+
