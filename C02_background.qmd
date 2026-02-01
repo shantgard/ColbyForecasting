@@ -37,7 +37,7 @@ OK - load the data we need.
 
 ```{r load_obs_mask}
 coast = read_coastline()
-obs = read_observations(scientificname = "Mola mola")
+obs = read_observations(scientificname = "Prionace glauca")
 db = brickman_database() |>
   filter(scenario == "STATIC", var == "mask")
 mask = read_brickman(db)
@@ -59,7 +59,7 @@ Now we can construct the plot.  Note that layering of data, then the coast then 
 ```{r all_observations}
 ggplot() +
   geom_sf(data = obs, alpha = 0.2, shape = "circle small", size = 1) +
-  geom_sf(data = coast, col = "orange") +
+  geom_sf(data = coast, col = "blue") +
   geom_text(data = all_counts,
             mapping = aes(x = LON0, 
                           y = LAT0, 
@@ -90,7 +90,7 @@ ggplot() +
           alpha = 0.2, 
           shape = "circle small", 
           size = 1) +
-  geom_sf(data = coast, col = "orange") +
+  geom_sf(data = coast, col = "blue") +
   geom_text(data = thinned_counts,
             mapping = aes(x = LON0, 
                           y = LAT0, 

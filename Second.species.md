@@ -206,21 +206,21 @@ obsbkg
     ## Simple feature collection with 22947 features and 2 fields
     ## Geometry type: POINT
     ## Dimension:     XY
-    ## Bounding box:  xmin: -74.9 ymin: 38.84435 xmax: -65.02004 ymax: 45.4147
+    ## Bounding box:  xmin: -74.9 ymin: 38.84822 xmax: -65.02004 ymax: 45.41467
     ## Geodetic CRS:  WGS 84
     ## # A tibble: 22,947 × 3
     ##    month class                geometry
     ##  * <fct> <fct>             <POINT [°]>
-    ##  1 Jan   presence      (-68.46 42.755)
-    ##  2 Jan   presence (-69.23333 40.16667)
-    ##  3 Jan   presence (-73.06867 38.90267)
-    ##  4 Jan   presence       (-69.85 40.25)
-    ##  5 Jan   presence    (-71.51667 40.15)
-    ##  6 Jan   presence   (-73.43817 38.895)
-    ##  7 Jan   presence (-73.33333 39.13333)
-    ##  8 Jan   presence     (-71.41667 40.3)
-    ##  9 Jan   presence  (-72.75133 39.1165)
-    ## 10 Jan   presence  (-73.4395 38.98933)
+    ##  1 Jan   presence (-72.92583 38.96967)
+    ##  2 Jan   presence (-69.63333 40.13333)
+    ##  3 Jan   presence    (-71.51667 40.15)
+    ##  4 Jan   presence    (-71.55 40.06667)
+    ##  5 Jan   presence    (-72.06667 39.65)
+    ##  6 Jan   presence     (-72.46667 39.2)
+    ##  7 Jan   presence     (-71.2 40.08333)
+    ##  8 Jan   presence     (-71.78333 40.2)
+    ##  9 Jan   presence   (-72.715 39.21667)
+    ## 10 Jan   presence    (-71.36667 39.95)
     ## # ℹ 22,937 more rows
 
 \#check tallying for each month

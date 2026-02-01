@@ -1,0 +1,30 @@
+---
+title: "Doryteuthis Pealeii"
+output: html_document
+date: "2026-01-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+source("setup.R")
+```
+
+```{r load_covar}
+cfg = read_configuration(scientificname = "Doryteuthis pealeii",
+                         version = "v1", 
+                         path = data_path("models"))
+db = brickman_database()
+db = brickman_database()
+present_conditions = read_brickman(db |> filter(scenario == "PRESENT", 
+                                                interval == "mon"),
+                       add = c("depth", "month")) |>
+  select(all_of(cfg$keep_vars))
+```
+
+```{r load_workflow}
+model_fits = read_model_fit(filename = "Doryteuthis_pealeii-v1-model_input.gpkg")
+model_fits
+```
